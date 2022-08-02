@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\system">
+      <UniqueIdentifier>{1be11253-146e-490f-b6a4-aae016847a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\python">
+      <UniqueIdentifier>{927c2809-4187-483a-aa0d-95079505c903}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\data">
+      <UniqueIdentifier>{29fd51ff-8695-41f7-9c83-37bebd384d12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\processing">
+      <UniqueIdentifier>{8d035e21-5a37-44f3-bf83-1765f352ca56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\label">
+      <UniqueIdentifier>{ef8ba6b4-8b98-4bf9-a189-d9e831e56c29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\system">
+      <UniqueIdentifier>{ceaf2c4b-0635-4661-b803-9ea71ada744c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\python">
+      <UniqueIdentifier>{36b32b7d-6c17-4efe-b369-ac9dc4964ae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\processing">
+      <UniqueIdentifier>{66d2e6e2-7d36-44c3-b152-480c872e56d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\label">
+      <UniqueIdentifier>{bbc19c8f-2b44-496f-b1b7-c47e26266475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\data">
+      <UniqueIdentifier>{f7c9b51d-215d-4fed-894a-348561907121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\processing\filter">
+      <UniqueIdentifier>{a818bf8b-38f6-46e6-bf0d-a66cc556f723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\processing\stanza">
+      <UniqueIdentifier>{ca91972c-f2b1-47da-ae07-5ee8c1d501a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\processing\filter">
+      <UniqueIdentifier>{ce70203c-2f20-4d3e-8eed-9323d15aa9de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\processing\stanza">
+      <UniqueIdentifier>{b706f3e2-e4d7-466d-a154-0a93d90e0d71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\data\item">
+      <UniqueIdentifier>{b6f4b49f-52ef-42dd-b437-5df1b2552db0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\data\item">
+      <UniqueIdentifier>{7219f9be-fa0e-4ae7-b749-e54e011b5d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\csv_parser">
+      <UniqueIdentifier>{63b3773c-67bf-49b0-b45a-49cbbeb1c9c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\csv_parser">
+      <UniqueIdentifier>{4999f731-3dc7-483d-9646-073f381ed281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\label\labeller">
+      <UniqueIdentifier>{105cfda6-aee3-4fe2-bcaa-bce9abf240e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\label\binance">
+      <UniqueIdentifier>{f2850b14-dbd4-44dc-a566-8f7ba7a194d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\label\labeller">
+      <UniqueIdentifier>{890e2114-3f03-43cb-8a0b-6e978ad150df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\label\binance">
+      <UniqueIdentifier>{5a078def-b73a-405d-8de0-38a958422b8f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="system\system.cpp">
+      <Filter>Исходные файлы\system</Filter>
+    </ClCompile>
+    <ClCompile Include="python\python.cpp">
+      <Filter>Исходные файлы\python</Filter>
+    </ClCompile>
+    <ClCompile Include="processing\filter\filter.cpp">
+      <Filter>Исходные файлы\processing\filter</Filter>
+    </ClCompile>
+    <ClCompile Include="processing\stanza\stanza.cpp">
+      <Filter>Исходные файлы\processing\stanza</Filter>
+    </ClCompile>
+    <ClCompile Include="data\loader.cpp">
+      <Filter>Исходные файлы\data</Filter>
+    </ClCompile>
+    <ClCompile Include="data\item\asset.cpp">
+      <Filter>Исходные файлы\data\item</Filter>
+    </ClCompile>
+    <ClCompile Include="data\item\ftr_message.cpp">
+      <Filter>Исходные файлы\data\item</Filter>
+    </ClCompile>
+    <ClCompile Include="data\item\message.cpp">
+      <Filter>Исходные файлы\data\item</Filter>
+    </ClCompile>
+    <ClCompile Include="data\item\package.cpp">
+      <Filter>Исходные файлы\data\item</Filter>
+    </ClCompile>
+    <ClCompile Include="data\item\token.cpp">
+      <Filter>Исходные файлы\data\item</Filter>
+    </ClCompile>
+    <ClCompile Include="data\item\word.cpp">
+      <Filter>Исходные файлы\data\item</Filter>
+    </ClCompile>
+    <ClCompile Include="data\item\wordset.cpp">
+      <Filter>Исходные файлы\data\item</Filter>
+    </ClCompile>
+    <ClCompile Include="csv_parser\csv_iterator.cpp">
+      <Filter>Исходные файлы\csv_parser</Filter>
+    </ClCompile>
+    <ClCompile Include="csv_parser\csv_row.cpp">
+      <Filter>Исходные файлы\csv_parser</Filter>
+    </ClCompile>
+    <ClCompile Include="label\labeller\labeller.cpp">
+      <Filter>Исходные файлы\label\labeller</Filter>
+    </ClCompile>
+    <ClCompile Include="label\binance\loader.cpp">
+      <Filter>Исходные файлы\label\binance</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\x64\Release\system\assets.data">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="..\x64\Release\system\config.json">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="system\system.hpp">
+      <Filter>Файлы заголовков\system</Filter>
+    </ClInclude>
+    <ClInclude Include="python\python.hpp">
+      <Filter>Файлы заголовков\python</Filter>
+    </ClInclude>
+    <ClInclude Include="processing\filter\filter.hpp">
+      <Filter>Файлы заголовков\processing\filter</Filter>
+    </ClInclude>
+    <ClInclude Include="processing\stanza\stanza.hpp">
+      <Filter>Файлы заголовков\processing\stanza</Filter>
+    </ClInclude>
+    <ClInclude Include="data\loader.hpp">
+      <Filter>Файлы заголовков\data</Filter>
+    </ClInclude>
+    <ClInclude Include="data\item\asset.hpp">
+      <Filter>Файлы заголовков\data\item</Filter>
+    </ClInclude>
+    <ClInclude Include="data\item\ftr_message.hpp">
+      <Filter>Файлы заголовков\data\item</Filter>
+    </ClInclude>
+    <ClInclude Include="data\item\message.hpp">
+      <Filter>Файлы заголовков\data\item</Filter>
+    </ClInclude>
+    <ClInclude Include="data\item\package.hpp">
+      <Filter>Файлы заголовков\data\item</Filter>
+    </ClInclude>
+    <ClInclude Include="data\item\token.hpp">
+      <Filter>Файлы заголовков\data\item</Filter>
+    </ClInclude>
+    <ClInclude Include="data\item\word.hpp">
+      <Filter>Файлы заголовков\data\item</Filter>
+    </ClInclude>
+    <ClInclude Include="data\item\wordset.hpp">
+      <Filter>Файлы заголовков\data\item</Filter>
+    </ClInclude>
+    <ClInclude Include="csv_parser\csv_iterator.hpp">
+      <Filter>Файлы заголовков\csv_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="csv_parser\csv_parser.hpp">
+      <Filter>Файлы заголовков\csv_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="csv_parser\csv_row.hpp">
+      <Filter>Файлы заголовков\csv_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="csv_parser\csv_traits.hpp">
+      <Filter>Файлы заголовков\csv_parser</Filter>
+    </ClInclude>
+    <ClInclude Include="label\labeller\labeller.hpp">
+      <Filter>Файлы заголовков\label\labeller</Filter>
+    </ClInclude>
+    <ClInclude Include="label\binance\klines.hpp">
+      <Filter>Файлы заголовков\label\binance</Filter>
+    </ClInclude>
+    <ClInclude Include="label\binance\loader.hpp">
+      <Filter>Файлы заголовков\label\binance</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
