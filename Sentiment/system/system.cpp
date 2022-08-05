@@ -60,6 +60,28 @@ void sentiment::System::Data::load(ftr_sample_t& ftr_sample, const std::string& 
 	ftr_sample = data.get < ftr_sample_t >();
 }
 
+void sentiment::System::Data::load(pkg_sample_t& packages, const std::string& source, const int len, const int index)
+{
+	json_t data;
+
+	auto path = std::next(std::filesystem::directory_iterator(Directory::data_sources / source / Directory::packages / std::format("L{}", len)), index)->path();
+
+	load(path, data);
+
+	packages = data.get < pkg_sample_t >();
+}
+
+void sentiment::System::Data::load(wst_sample_t& packages, const std::string& source, const int len, const int index)
+{
+	json_t data;
+	
+	auto path = std::next(std::filesystem::directory_iterator(Directory::data_sources / source / Directory::wordsets / std::format("L{}", len)), index)->path();
+
+	load(path, data);
+
+	packages = data.get < wst_sample_t >();
+}
+
 void sentiment::System::Data::save(const ftr_sample_t& ftr_sample, const std::string& source)
 {
 	json_t obj = ftr_sample;
@@ -112,6 +134,67 @@ void sentiment::System::Data::save(const wst_sample_t& wst_sample, const std::st
 	auto filename = std::format("wordsets-{}-{}-{}.json", wst_sample.back().year(), month_str, day_str);
 
 	save(Directory::data_sources / source / Directory::wordsets / std::format("L{}", len) / filename, data);
+}
+
+void sentiment::System::Data::save_labelled(const pkg_sample_t& pkg_sample, const std::string& source, const int len, const int n, const double eps)
+{
+	json_t obj = pkg_sample;
+
+	auto month = pkg_sample.back().month();
+	std::string month_str;
+	if (month < 10)
+		month_str = std::format("0{}", month);
+	else
+		month_str = std::to_string(month);
+
+	auto day = pkg_sample.back().day();
+	std::string day_str;
+	if (day < 10)
+		day_str = std::format("0{}", day);
+	else
+		day_str = std::to_string(day);
+
+	auto filename = std::format("packages-{}-{}-{}.json", pkg_sample.back().year(), month_str, day_str);
+
+	auto path = Directory::data_sources / source / Directory::labelled / std::format("4h-L{}-N{}-EPS{}", len, n, eps) / Directory::packages;
+
+	if (!std::filesystem::exists(path))
+	{
+		std::filesystem::create_directories(path);
+	}
+
+	Data::save(path / filename, obj);
+}
+
+void sentiment::System::Data::save_labelled(const wst_sample_t& wst_sample, const std::string& source, const int len, const int n, const double eps)
+{
+	json_t obj = wst_sample;
+
+	auto month = wst_sample.back().month();
+	std::string month_str;
+	if (month < 10)
+		month_str = std::format("0{}", month);
+	else
+		month_str = std::to_string(month);
+
+	auto day = wst_sample.back().day();
+	std::string day_str;
+	if (day < 10)
+		day_str = std::format("0{}", day);
+	else
+		day_str = std::to_string(day);
+
+
+	auto filename = std::format("wordsets-{}-{}-{}.json", wst_sample.back().year(), month_str, day_str);
+
+	auto path = Directory::data_sources / source / Directory::labelled / std::format("4h-L{}-N{}-EPS{}", len, n, eps) / Directory::wordsets;
+
+	if (!std::filesystem::exists(path))
+	{
+		std::filesystem::create_directories(path);
+	}
+
+	Data::save(path / filename, obj);
 }
 
 void sentiment::System::Data::load_last(pkg_sample_t& pkg_sample, const std::string& source, const int len)
@@ -402,5 +485,180 @@ void sentiment::System::run()
 		{
 			throw e;
 		}
+	}
+}
+
+void sentiment::System::update_binance() const
+{
+	std::string answer;
+
+	std::cout << "Enter timeframe: ";
+	std::cin >> answer;
+
+	data::Binance_Loader(m_python).run(m_assets, answer);
+}
+
+void sentiment::System::label() const
+{
+	processing::Labeller labeller;
+
+	for (const auto& source : m_config.sources())
+	{
+		for (const auto& len : m_config.lens())
+		{
+			std::cout << "Labelling for " << source << " L" << len << std::endl;
+
+			int n;
+
+			std::cout << "Enter N: " << std::endl;
+
+			std::cin >> n;
+
+
+			double eps;
+			std::cout << "Enter eps: " << std::endl;
+			std::cin >> eps;
+
+			pkg_sample_t packages;
+			wst_sample_t wordsets;
+
+			if (Data::num_packages(source, len) != Data::num_wordsets(source, len))
+			{
+				throw system_exception("Wrong package/wordset creation: num files error");
+			}
+
+			for (auto i = 0U; i < Data::num_packages(source, len); ++i)
+			{
+				Data::load(packages, source, len, i);
+				Data::load(wordsets, source, len, i);
+
+				if (std::size(packages) != std::size(wordsets))
+				{
+					throw system_exception("Wrong package/wordset creation: size error");
+				}
+
+				for (auto i = 0U; i < std::size(packages); ++i)
+				{
+					packages[i].m_binary = 0;
+					packages[i].m_ternary = 0;
+
+					wordsets[i].binary = 0;
+					wordsets[i].ternary = 0;
+				}
+
+				labeller(packages, m_assets, n, eps);
+
+				if (packages.empty())
+					continue;
+
+				for (auto i = 0U; i < std::size(packages); ++i)
+				{
+					if (wordsets[i].timestamp != packages[i].m_timestamp)
+					{
+						std::cout << wordsets[i].timestamp << " and " << packages[i].m_timestamp << std::endl;
+						throw system_exception("Wrong package/wordset creation: timestamp error");
+					}
+
+					wordsets[i].binary = packages[i].m_binary;
+					wordsets[i].ternary = packages[i].m_ternary;
+				}
+
+				wordsets.erase(std::remove_if(std::begin(wordsets), std::end(wordsets), [](const auto& wordset)
+					{ return wordset.binary == 0; }), std::end(wordsets));
+
+				Data::save_labelled(packages, source, len, n, eps);
+				Data::save_labelled(wordsets, source, len, n, eps);
+			}
+		}
+		
+	}
+}
+
+void sentiment::System::label_study() const
+{
+	processing::Labeller labeller;
+
+	for (const auto& source : m_config.sources())
+	{
+		for (const auto& len : m_config.lens())
+		{
+			pkg_sample_t packages;
+
+			int n;
+
+			std::cout << "Enter N: " << std::endl;
+
+			std::cin >> n;
+
+			std::vector < double > eps_container;
+
+			std::cout << "Enter eps: " << std::endl;
+
+			std::copy(
+				std::istream_iterator < double >(std::cin),
+				std::istream_iterator < double >(),
+				std::back_inserter(eps_container)
+			);
+
+			std::cin.clear();
+
+			boost::python::list eps_cont;
+			boost::python::list positive;
+			boost::python::list negative;
+			boost::python::list neutral;
+
+			for (const auto& eps : eps_container)
+			{
+				eps_cont.append(eps);
+
+				auto pos = 0.0;
+				auto neg = 0.0;
+				auto neut = 0.0;
+				auto num_packages = 0;
+
+				for (auto i = 0U; i < Data::num_packages(source, len); ++i)
+				{
+					Data::load(packages, source, len, i);
+
+					for (auto& package : packages)
+					{
+						package.m_binary = 0;
+						package.m_ternary = 0;
+					}
+
+					labeller(packages, m_assets, n, eps);
+
+					if (!packages.empty())
+					{
+						pos += double(std::count_if(std::begin(packages), std::end(packages), [](const auto& package)
+							{ return package.m_ternary == 1; }));
+
+						neg += double(std::count_if(std::begin(packages), std::end(packages), [](const auto& package)
+							{ return package.m_ternary == -1; }));
+
+						neut += double(std::count_if(std::begin(packages), std::end(packages), [](const auto& package)
+							{ return package.m_ternary == 0; }));
+
+						num_packages += std::size(packages);
+					}
+				}
+
+				positive.append(pos / num_packages);
+				negative.append(neg / num_packages);
+				neutral.append(neut / num_packages);
+			}
+
+			try
+			{
+				boost::python::exec("from python.label.script import hallway", m_python->global(), m_python->global());
+
+				m_python->global()["hallway"](positive, negative, neutral, eps_cont);
+			}
+			catch (const boost::python::error_already_set&)
+			{
+				std::cerr << m_python->exception();
+			}
+		}
+		
 	}
 }

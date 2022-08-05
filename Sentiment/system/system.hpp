@@ -30,8 +30,12 @@
 #include "../data/item/wordset.hpp"
 #include "../data/item/asset.hpp"
 
+#include "../label/binance/binance_loader.hpp"
+#include "../label/labeller/labeller.hpp"
+
 // filter
 #include "../processing/filter/filter.hpp"
+
 
 // parser
 #include "../csv_parser/csv_parser.hpp"
@@ -122,6 +126,7 @@ namespace sentiment
 
 				static inline const path_t packages	= "packages";
 				static inline const path_t wordsets = "wordsets";
+				static inline const path_t labelled = "labelled";
 
 				static int size(const path_t& path)
 				{
@@ -188,11 +193,19 @@ namespace sentiment
 
 			static void load(ftr_sample_t&, const std::string&);
 
+			static void load(pkg_sample_t&, const std::string&, const int, const int);
+
+			static void load(wst_sample_t&, const std::string&, const int, const int);
+
 			static void save(const ftr_sample_t&, const std::string&);
 
 			static void save(const pkg_sample_t&, const std::string&, const int);
 
 			static void save(const wst_sample_t&, const std::string&, const int);
+
+			static void save_labelled(const pkg_sample_t&, const std::string&, const int, const int, const double);
+
+			static void save_labelled(const wst_sample_t&, const std::string&, const int, const int, const double);
 
 			static void load_last(pkg_sample_t&, const std::string&, const int);
 
@@ -214,6 +227,16 @@ namespace sentiment
 				return Directory::empty(Directory::data_sources / source / Directory::wordsets / std::format("L{}", len));
 			}
 
+			static int num_packages(const std::string& source, const int len)
+			{
+				return Directory::size(Directory::data_sources / source / Directory::packages / std::format("L{}", len));
+			}
+
+			static int num_wordsets(const std::string& source, const int len)
+			{
+				return Directory::size(Directory::data_sources / source / Directory::wordsets / std::format("L{}", len));
+			}
+
 		private:
 			static void load(const path_t&, json_t&);
 
@@ -228,6 +251,12 @@ namespace sentiment
 
 	public:
 		void run();
+
+		void update_binance() const;
+
+		void label() const;
+
+		void label_study() const;
 
 	private:
 		static inline constexpr auto m_timeout			= duration_t(4 * 60 * 60); // 4 hours
