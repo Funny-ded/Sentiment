@@ -4,9 +4,9 @@
 #include <memory>
 #include <string>
 
-#include "../data/items/asset.hpp"
+#include "../../data/item/asset.hpp"
 
-#include "../python/python.hpp"
+#include "../../python/python.hpp"
 
 namespace sentiment::data
 {
