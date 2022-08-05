@@ -129,7 +129,7 @@
     <ClCompile Include="label\labeller\labeller.cpp">
       <Filter>Исходные файлы\label\labeller</Filter>
     </ClCompile>
-    <ClCompile Include="label\binance\loader.cpp">
+    <ClCompile Include="label\binance\binance_loader.cpp">
       <Filter>Исходные файлы\label\binance</Filter>
     </ClCompile>
   </ItemGroup>
@@ -196,7 +196,7 @@
     <ClInclude Include="label\binance\klines.hpp">
       <Filter>Файлы заголовков\label\binance</Filter>
     </ClInclude>
-    <ClInclude Include="label\binance\loader.hpp">
+    <ClInclude Include="label\binance\binance_loader.hpp">
       <Filter>Файлы заголовков\label\binance</Filter>
     </ClInclude>
   </ItemGroup>
